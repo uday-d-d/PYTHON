@@ -1,30 +1,31 @@
 import tkinter as tk
 from tkinter import messagebox
+import re
 
-# Create main window
 root = tk.Tk()
 root.title("User Registration Form")
 root.geometry("450x500")
 root.configure(bg="#f0f0f0")
 
-# Tkinter variables
 name_var = tk.StringVar()
 email_var = tk.StringVar()
 password_var = tk.StringVar()
-gender_var = tk.StringVar(value="Male")  # default
+gender_var = tk.StringVar(value="")
 country_var = tk.StringVar(value="Select Country")
 age_var = tk.StringVar()
 
-# Function to clear form
+def is_valid_email(email):
+    pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
+    return re.match(pattern, email)
+
 def clear_form():
     name_var.set("")
     email_var.set("")
     password_var.set("")
-    gender_var.set("Male")
+    gender_var.set("")
     country_var.set("Select Country")
     age_var.set("")
 
-# Function to submit form
 def submit_form():
     name = name_var.get()
     email = email_var.get()
@@ -33,13 +34,17 @@ def submit_form():
     country = country_var.get()
     age = age_var.get()
     
-    if name and email and password and gender and country != "Select Country" and age:
-        messagebox.showinfo("Registration Successful", f"Welcome {name}!\nGender: {gender}\nCountry: {country}")
-        clear_form()
-    else:
+    if not (name and email and password and gender and country != "Select Country" and age):
         messagebox.showwarning("Error", "All fields are required!")
+        return
+    
+    if not is_valid_email(email):
+        messagebox.showerror("Invalid Email", "Please enter a valid email address")
+        return
+    
+    messagebox.showinfo("Registration Successful", f"Welcome {name}!\nGender: {gender}\nCountry: {country}")
+    clear_form()
 
-# Labels and Entries
 tk.Label(root, text="User Registration Form", font=("Arial", 20, "bold"), bg="#f0f0f0").pack(pady=20)
 
 tk.Label(root, text="Name", bg="#f0f0f0").pack()
@@ -49,7 +54,7 @@ tk.Label(root, text="Email", bg="#f0f0f0").pack()
 tk.Entry(root, textvariable=email_var, width=30).pack(pady=5)
 
 tk.Label(root, text="Password", bg="#f0f0f0").pack()
-tk.Entry(root, textvariable=password_var, width=30, show="\u2022").pack(pady=5)
+tk.Entry(root, textvariable=password_var, width=30, show="*").pack(pady=5)
 
 tk.Label(root, text="Gender", bg="#f0f0f0").pack()
 gender_frame = tk.Frame(root, bg="#f0f0f0")
@@ -65,8 +70,6 @@ tk.OptionMenu(root, country_var, *countries).pack(pady=5)
 tk.Label(root, text="Age", bg="#f0f0f0").pack()
 tk.Entry(root, textvariable=age_var, width=30).pack(pady=5)
 
-# Submit Button
 tk.Button(root, text="Register", command=submit_form, width=20, bg="green", fg="white").pack(pady=20)
 
 root.mainloop()
-
