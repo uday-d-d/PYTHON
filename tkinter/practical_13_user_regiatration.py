@@ -5,7 +5,7 @@ import re
 root = tk.Tk()
 root.title("User Registration Form")
 root.geometry("450x600")
-root.configure(bg="#f0f0f0")
+root.configure(bg="#f0f0f0") 
 
 name_var = tk.StringVar()
 email_var = tk.StringVar()
