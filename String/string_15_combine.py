@@ -11,7 +11,7 @@ print("\n")
 
 #isspace() and whitespace
 str = "hello python"
-print("String contains only space : ",str)
+print("String : ",str)
 x = str.isspace()
 print("String contains only space : ",x)
 str = "\n \t"
